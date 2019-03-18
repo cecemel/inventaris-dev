@@ -82,5 +82,26 @@ python build_images.py [GITHUB_USER] [GITHUB_PASS] storageprovider
 - (linux issue) the redis data folder seems to be unknown user. THis has to do with user name space not properly mapped
 
 
-### wildcards-private.yaml
-For inventaris, the following should work
+### config files
+
+#### inventaris: wildcards-private.yaml
+For inventaris, the following wildcards-private.yaml for this docker environment  should work.
+Please note: some private data, such as oeauth.consumer_key are still required. (and cannot be commited here)
+```
+variables:
+  database:
+    db_user : 'postgres'
+    db_pwd  : 'postgres'
+    db_url  : 'postgres:5432'
+    db_name : 'inventaris'
+  redis:
+    redis.host : 'redis'
+  storageprovider:
+      storageprovider.baseurl : 'http://storageprovider:6544'
+  searchengine:
+      searchengine.baseurl : 'http://elastic:9200'
+development-extension: |
+```
+
+#### storageprovider: development-private.ini
+Take the one from example.
