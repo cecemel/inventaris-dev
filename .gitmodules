@@ -1,0 +1,6 @@
+[submodule "inventaris"]
+	path = inventaris
+	url = git@github.com:OnroerendErfgoed/inventaris.git
+[submodule "storageprovider"]
+	path = storageprovider
+	url = git@github.com:OnroerendErfgoed/storageprovider.git

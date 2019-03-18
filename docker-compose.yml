@@ -1,0 +1,56 @@
+# note links are deprecated, so this is why there is no systematic use (because lazy)
+# see https://medium.com/@tristan.claverie/well-there-is-in-fact-a-simpler-solution-than-creating-a-network-do-nothing-at-all-docker-f38e93326134
+version: "3.4"
+services:
+  inventaris-storage-provider:
+    image: inventaris-dev/storageprovider:latest
+    ports:
+      - "6544:6544"
+    volumes:
+      - ./data/storageprovider:/inventaris_store
+  inventaris-rqworker:
+    image: inventaris-dev/inventaris:latest
+    links:
+     - inventaris-elastic:elastic
+     - inventaris-db:postgres
+     - inventaris-storage-provider:storageprovider
+     - inventaris-redis:redis
+    command: rqworker -u "http://redis:6379" inventaris_es_indexer
+  inventaris-elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.2
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - "9200:9200"
+    volumes:
+      - ./data/elastic:/usr/share/elasticsearch/data
+  inventaris-db:
+    image: inventaris-dev/postgres:latest
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_USER=postgres"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  inventaris-redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  inventaris-app:
+    image: inventaris-dev/inventaris:latest
+    ports:
+     - "6543:6543"
+    volumes:
+     - ./inventaris/inventaris:/app/inventaris
+     - ./inventaris/alembic:/app/alembic
+     - ./inventaris/deploy:/app/deploy
+     - ./inventaris/tests:/app/tests
+     - ./inventaris/docs:/app/docs
+     - ./inventaris/alembic.ini:/app/alembic.ini
+     - ./inventaris/production.ini:/app/production.ini
+    links:
+     - inventaris-db:postgres
+     - inventaris-redis:redis
+     - inventaris-storage-provider:storageprovider
+     - inventaris-elastic:elastic

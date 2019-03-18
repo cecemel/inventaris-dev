@@ -1,0 +1,4 @@
+FROM inventaris-dev/inventaris:latest
+
+WORKDIR "/app"
+CMD ["sh", "-c", "initialize_inventaris_db development.ini#inventaris; initialize_inventaris_es development.ini#inventaris"]
