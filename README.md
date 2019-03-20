@@ -66,6 +66,7 @@ python build_images.py [GITHUB_USER] [GITHUB_PASS] storageprovider
 - bringing *-dev repo up to data: git pull; git submodule update --init --recursive
 
 ### caveats-todos
+- !!!!! tests are not working, need some specific test.ini config file
 - on slow networks, you'll might have to build a couple of times (2,3) again, because some scripts are not robust. needs fix
 - if you modify the production.ini, you will have to build the image again
 - docs need to be build automatically
