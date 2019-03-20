@@ -57,11 +57,15 @@ def start_elastic():
         print("issue cleaning docker images, let's proceed and see...")
 
     _exec_command('mkdir -p {}'.format(ELASTIC_DATA))
+    print('--------------------------TODO: remove this chmod command')
+    _exec_command('chmod 777 {}'.format(ELASTIC_DATA))
 
     command_to_run = "docker run -p '9200:9200' -e 'discovery.type=single-node' " \
                      "  --name {} -v {}:/usr/share/elasticsearch/data {} &".format(ELASTIC_CONTAINER_NAME,
                                                                                 ELASTIC_DATA,
                                                                                 ELASTIC_IMAGE)
+
+    print(command_to_run)
     _exec_command(command_to_run)
     print("wait for elastic to boot (10 secs)")
     time.sleep(10)
